@@ -1,0 +1,1919 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KERIDAINE · Baile de Máscaras</title>
+
+  <!-- Favicon -->
+  <link rel="icon" href="https://github.com/MOSCHIAT/Keridaine/blob/main/mask.ico?raw=true" type="image/x-icon" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ============================================================
+       RESET & BASE (Mobile First)
+       ============================================================ */
+    *,
+    *::before,
+    *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --rose: #f9d5e5;
+      --lilac: #d9c8f0;
+      --sky: #c3e2f7;
+      --mint: #c7f0db;
+      --butter: #f9edc7;
+      --glass-bg: rgba(255, 255, 255, 0.18);
+      --glass-border: rgba(255, 255, 255, 0.35);
+      --glass-shadow: rgba(0, 0, 0, 0.04);
+      --text-dark: #1e1a2b;
+      --text-soft: #3d3652;
+      --text-light: #6b637e;
+      --white: #ffffff;
+      --radius: 2.4rem;
+      --radius-sm: 1.2rem;
+      --transition: 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    html {
+      scroll-behavior: smooth;
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      color: var(--text-dark);
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+      position: relative;
+      background:
+        radial-gradient(circle at 12% 8%, #8d5eff 0%, transparent 35%),
+        radial-gradient(circle at 88% 10%, #47f7e8 0%, transparent 35%),
+        radial-gradient(circle at 82% 42%, #e7ff66 0%, transparent 30%),
+        radial-gradient(circle at 48% 82%, #ff2ba5 0%, transparent 38%),
+        radial-gradient(circle at 12% 88%, #ffc4d9 0%, transparent 30%),
+        radial-gradient(circle at 95% 92%, #ffc56b 0%, transparent 30%),
+        linear-gradient(180deg,
+          #8da2bc 0%,
+          #c5d0d2 30%,
+          #f5e58f 55%,
+          #ffc5d7 75%,
+          #ff4aa8 100%);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: -20%;
+      background: inherit;
+      filter: blur(90px);
+      opacity: .85;
+      z-index: -2;
+    }
+
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: radial-gradient(rgba(255, 255, 255, .20) 1px, transparent 1px);
+      background-size: 5px 5px;
+      opacity: .08;
+      mix-blend-mode: soft-light;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .site-wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.2rem;
+    }
+
+    /* ============================================================
+       GLASS MIXIN
+       ============================================================ */
+    .glass {
+      background: var(--glass-bg);
+      backdrop-filter: blur(16px) saturate(1.2);
+      -webkit-backdrop-filter: blur(16px) saturate(1.2);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 12px 48px var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+      border-radius: var(--radius);
+    }
+
+    .glass-light {
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(10px) saturate(1.1);
+      -webkit-backdrop-filter: blur(10px) saturate(1.1);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.03);
+      border-radius: var(--radius-sm);
+    }
+
+    /* ============================================================
+       TYPOGRAPHY (Mobile First)
+       ============================================================ */
+    .font-serif {
+      font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+    }
+
+    .font-sans {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    .heading-xl {
+      font-size: clamp(2.8rem, 8vw, 6.8rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+    }
+
+    .heading-lg {
+      font-size: clamp(1.8rem, 4.5vw, 3.4rem);
+      font-weight: 600;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+    }
+
+    .heading-md {
+      font-size: clamp(1.2rem, 2.8vw, 2.2rem);
+      font-weight: 600;
+      line-height: 1.25;
+    }
+
+    .text-body {
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--text-soft);
+      line-height: 1.7;
+    }
+
+    .text-small {
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--text-light);
+      letter-spacing: 0.02em;
+    }
+
+    .text-uppercase {
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    /* ============================================================
+       SECTION COMMON (Mobile First – mais compacto)
+       ============================================================ */
+    section {
+      padding: 2.5rem 0;
+      position: relative;
+    }
+
+    .section-label {
+      display: inline-block;
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-light);
+      margin-bottom: 0.4rem;
+      border-left: 3px solid var(--lilac);
+      padding-left: 0.8rem;
+    }
+
+    .section-title {
+      margin-bottom: 0.8rem;
+    }
+
+    .section-sub {
+      max-width: 560px;
+      color: var(--text-soft);
+    }
+
+    /* ============================================================
+       HERO (Mobile First – compacto e centralizado)
+       ============================================================ */
+    #hero {
+      padding: 0.8rem 0 2rem;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      align-items: center;
+      width: 100%;
+      text-align: center;
+    }
+
+    .hero-content {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      align-items: center;
+      order: 2;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-soft);
+      background: rgba(255, 255, 255, 0.3);
+      backdrop-filter: blur(6px);
+      padding: 0.3rem 1rem 0.3rem 0.8rem;
+      border-radius: 100px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      width: fit-content;
+      align-self: center;
+    }
+
+    .hero-badge span {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--lilac);
+      animation: pulseDot 2s ease-in-out infinite;
+    }
+
+    @keyframes pulseDot {
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.3;
+        transform: scale(0.7);
+      }
+    }
+
+    .hero-title {
+      margin-top: 0.1rem;
+    }
+
+    .hero-title img {
+      max-width: 80%;
+      height: auto;
+      display: block;
+      margin: 0 auto;
+    }
+
+    .hero-desc {
+      font-size: 1rem;
+      max-width: 100%;
+      color: var(--text-soft);
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.4rem 1.2rem;
+      font-size: 0.85rem;
+      color: var(--text-soft);
+      padding: 0.1rem 0;
+    }
+
+    .hero-meta-item {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .hero-meta-item .dot {
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: var(--lilac);
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 0.8rem;
+      margin-top: 0.2rem;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1.6rem;
+      background: rgba(255, 255, 255, 0.35);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      border-radius: 60px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: all var(--transition);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+    }
+
+    .btn-primary:hover {
+      background: rgba(255, 255, 255, 0.55);
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
+      border-color: rgba(255, 255, 255, 0.7);
+    }
+
+    .btn-primary:active {
+      transform: scale(0.97);
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.4rem 1.2rem;
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 60px;
+      font-family: 'Inter', sans-serif;
+      font-weight: 500;
+      font-size: 0.85rem;
+      color: var(--text-soft);
+      cursor: pointer;
+      transition: all var(--transition);
+      text-decoration: none;
+      backdrop-filter: blur(4px);
+    }
+
+    .btn-outline:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.5);
+      transform: translateY(-1px);
+    }
+
+    /* Hero 3D Container */
+    .hero-visual {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+      order: 1;
+      width: 100%;
+      max-width: 320px;
+      margin: 0 auto;
+      aspect-ratio: 1/1;
+    }
+
+    #three-container {
+      width: 100%;
+      height: 100%;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    /* ============================================================
+       ABOUT (Mobile First – compacto)
+       ============================================================ */
+    #about .about-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.8rem;
+      align-items: center;
+      text-align: center;
+    }
+
+    #about .about-text {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      align-items: center;
+    }
+
+    #about .about-text .lead {
+      font-size: 1.1rem;
+      font-weight: 400;
+      color: var(--text-soft);
+      line-height: 1.6;
+    }
+
+    #about .about-image {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .about-mask-display {
+      width: 100%;
+      max-width: 240px;
+      aspect-ratio: 1/1.2;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(8px);
+      border-radius: var(--radius);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.2rem;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.03);
+      margin: 0 auto;
+    }
+
+    .about-mask-display img {
+      width: 80%;
+      height: auto;
+      opacity: 0.8;
+      border-radius: var(--radius-sm);
+    }
+
+    /* ============================================================
+       ATTRACTIONS (Mobile First – compacto)
+       ============================================================ */
+    #attractions .attractions-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1rem;
+      margin-top: 1.6rem;
+      max-width: 360px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .attraction-card {
+      padding: 1.4rem 1rem;
+      text-align: center;
+      transition: all var(--transition);
+      cursor: default;
+      background: rgba(255, 255, 255, 0.10);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: var(--radius-sm);
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.02);
+    }
+
+    .attraction-card:hover {
+      transform: translateY(-6px) scale(1.01);
+      background: rgba(255, 255, 255, 0.22);
+      border-color: rgba(255, 255, 255, 0.4);
+      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.04);
+    }
+
+    .attraction-icon {
+      font-size: 2rem;
+      margin-bottom: 0.6rem;
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 0.5rem 0.8rem;
+      border-radius: 100px;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+    }
+
+    .attraction-card h3 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+
+    .attraction-card p {
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      max-width: 260px;
+      margin: 0 auto;
+    }
+
+    /* ============================================================
+       LINEUP (Mobile First – compacto)
+       ============================================================ */
+    #lineup .lineup-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+      margin-top: 1.6rem;
+    }
+
+    .lineup-schedule .time-slot {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.1rem;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      text-align: center;
+    }
+
+    .lineup-schedule .time-slot:last-child {
+      border-bottom: none;
+    }
+
+    .lineup-schedule .time-slot .time {
+      font-weight: 600;
+      color: var(--text-dark);
+      font-size: 0.95rem;
+    }
+
+    .lineup-schedule .time-slot .dj-name {
+      color: var(--text-soft);
+      font-weight: 400;
+      font-size: 0.9rem;
+    }
+
+    .lineup-featured {
+      border-left: none;
+      border-top: 4px solid var(--lilac);
+      padding-top: 1.2rem;
+    }
+
+    .lineup-featured blockquote {
+      font-style: italic;
+      color: var(--text-soft);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 0.8rem;
+      margin-top: 0.8rem;
+      font-size: 0.9rem;
+    }
+
+    /* ============================================================
+       TICKETS (Mobile First – compacto)
+       ============================================================ */
+    #tickets .tickets-wrapper {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: var(--radius);
+      padding: 1.5rem 1rem;
+      box-shadow: 0 12px 48px rgba(0, 0, 0, 0.02);
+      text-align: center;
+    }
+
+    .tickets-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      align-items: center;
+    }
+
+    .tickets-info .badge-lote {
+      display: inline-block;
+      font-size: 0.65rem;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.8rem;
+      border-radius: 100px;
+      background: rgba(255, 215, 200, 0.3);
+      border: 1px solid rgba(255, 215, 200, 0.2);
+      width: fit-content;
+      color: var(--text-soft);
+    }
+
+    .tickets-info .price {
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 700;
+      color: var(--text-dark);
+      letter-spacing: -0.02em;
+    }
+
+    .tickets-info .price small {
+      font-size: 1rem;
+      font-weight: 400;
+      color: var(--text-light);
+    }
+
+    .tickets-info .ticket-desc {
+      color: var(--text-soft);
+      max-width: 360px;
+    }
+
+    .tickets-cta {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 0.8rem;
+      margin-top: 0.2rem;
+    }
+
+    .tickets-qr {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3rem;
+      padding: 0.8rem;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-sm);
+      border: 1px dashed rgba(255, 255, 255, 0.2);
+      min-width: 100px;
+    }
+
+    .tickets-qr img {
+      width: 50px;
+      height: 50px;
+      object-fit: contain;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.05);
+    }
+
+    .tickets-qr .qr-label {
+      font-size: 0.55rem;
+      color: var(--text-light);
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+    }
+
+    /* ============================================================
+       MASK SECTION (Mobile First – compacto)
+       ============================================================ */
+    #mask .mask-content {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.8rem;
+      align-items: center;
+      text-align: center;
+    }
+
+    #mask .mask-visual {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #mask .mask-visual img {
+      width: 100%;
+      max-width: 220px;
+      height: auto;
+      border-radius: var(--radius-sm);
+      filter: drop-shadow(0 12px 48px rgba(160, 130, 190, 0.15));
+    }
+
+    #mask .mask-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+      align-items: center;
+    }
+
+    #mask .mask-info .mask-note {
+      font-size: 0.95rem;
+      color: var(--text-soft);
+      padding: 0.8rem 1rem;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: var(--radius-sm);
+      border-left: 3px solid var(--lilac);
+      width: 100%;
+      text-align: left;
+    }
+
+    /* ============================================================
+       LOCATION (Mobile First – compacto)
+       ============================================================ */
+    #location .location-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+      align-items: stretch;
+    }
+
+    #location .location-info {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      padding: 1.5rem;
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      align-items: center;
+      text-align: center;
+    }
+
+    #location .location-info .address {
+      font-size: 1.2rem;
+      font-weight: 500;
+      line-height: 1.5;
+    }
+
+    #location .location-info .address-detail {
+      color: var(--text-soft);
+    }
+
+    #location .map-placeholder {
+      min-height: 180px;
+      border-radius: var(--radius-sm);
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-light);
+      font-size: 0.85rem;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(4px);
+    }
+
+    .map-placeholder .map-overlay {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 30% 40%, rgba(200, 180, 230, 0.05), transparent 70%);
+      pointer-events: none;
+    }
+
+    /* ============================================================
+       INSTAGRAM (Mobile First – compacto)
+       ============================================================ */
+    #instagram .insta-content {
+      text-align: center;
+      padding: 1.8rem 1rem;
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(12px);
+      border-radius: var(--radius);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    #instagram .insta-handle {
+      font-size: clamp(1.6rem, 4.5vw, 3rem);
+      font-weight: 600;
+      letter-spacing: -0.01em;
+      background: linear-gradient(135deg, #c084d8, #8bb8e0);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    #instagram .insta-sub {
+      color: var(--text-soft);
+      margin: 0.2rem 0 1rem;
+    }
+
+    /* ============================================================
+       FOOTER (Mobile First – compacto)
+       ============================================================ */
+    #footer {
+      padding: 1.5rem 0 2rem;
+      text-align: center;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      margin-top: 1rem;
+    }
+
+    #footer p {
+      font-size: 0.75rem;
+      color: var(--text-light);
+      letter-spacing: 0.04em;
+    }
+
+    /* ============================================================
+       ANIMATIONS · FADE IN
+       ============================================================ */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+
+    .fade-in.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .fade-in-d1 {
+      transition-delay: 0.08s;
+    }
+    .fade-in-d2 {
+      transition-delay: 0.16s;
+    }
+    .fade-in-d3 {
+      transition-delay: 0.24s;
+    }
+    .fade-in-d4 {
+      transition-delay: 0.32s;
+    }
+
+    /* ============================================================
+       RESPONSIVE · TABLET (≥ 768px)
+       ============================================================ */
+    @media (min-width: 768px) {
+      .site-wrapper {
+        padding: 0 2rem;
+      }
+
+      section {
+        padding: 3rem 0;
+      }
+
+      .hero-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        text-align: center;
+      }
+
+      .hero-content {
+        align-items: center;
+        order: 1;
+      }
+
+      .hero-badge {
+        align-self: center;
+      }
+
+      .hero-title img {
+        max-width: 100%;
+        margin: 0 auto;
+      }
+
+      .hero-desc {
+        max-width: 480px;
+        font-size: 1.1rem;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .hero-meta {
+        justify-content: center;
+      }
+
+      .hero-actions {
+        justify-content: center;
+      }
+
+      .hero-visual {
+        order: 2;
+        max-width: 100%;
+      }
+
+      #three-container {
+        border-radius: var(--radius);
+      }
+
+      #about .about-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 2.4rem;
+        text-align: left;
+      }
+
+      #about .about-text {
+        align-items: flex-start;
+      }
+
+      .about-mask-display {
+        max-width: 300px;
+      }
+
+      #attractions .attractions-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 1.2rem;
+        max-width: 100%;
+      }
+
+      #lineup .lineup-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 1.6rem;
+      }
+
+      .lineup-schedule .time-slot {
+        flex-direction: row;
+        justify-content: space-between;
+        text-align: left;
+        gap: 0;
+      }
+
+      .lineup-featured {
+        border-left: 4px solid var(--lilac);
+        border-top: none;
+        padding-top: 0;
+        padding-left: 1.2rem;
+      }
+
+      #tickets .tickets-wrapper {
+        grid-template-columns: 1fr 1fr;
+        gap: 2rem;
+        padding: 2rem 2rem;
+        text-align: left;
+      }
+
+      #tickets .tickets-info {
+        align-items: flex-start;
+      }
+
+      #tickets .tickets-cta {
+        justify-content: flex-start;
+      }
+
+      #mask .mask-content {
+        grid-template-columns: 1fr 1fr;
+        gap: 2.4rem;
+        text-align: left;
+      }
+
+      #mask .mask-info {
+        align-items: flex-start;
+      }
+
+      #mask .mask-visual img {
+        max-width: 300px;
+      }
+
+      #location .location-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 1.6rem;
+      }
+
+      #location .location-info {
+        align-items: flex-start;
+        text-align: left;
+      }
+
+      #instagram .insta-content {
+        padding: 2.4rem 1.5rem;
+      }
+
+      .btn-primary {
+        padding: 0.7rem 2rem;
+        font-size: 0.95rem;
+      }
+    }
+
+    /* ============================================================
+       RESPONSIVE · DESKTOP (≥ 1024px)
+       ============================================================ */
+    @media (min-width: 1024px) {
+      .site-wrapper {
+        padding: 0 3rem;
+      }
+
+      section {
+        padding: 3.5rem 0;
+      }
+
+      .hero-grid {
+        gap: 2.4rem;
+      }
+
+      .hero-title img {
+        max-width: 85%;
+      }
+
+      .hero-desc {
+        font-size: 1.2rem;
+      }
+
+      .hero-meta {
+        gap: 0.6rem 2rem;
+        font-size: 1rem;
+      }
+
+      .hero-actions {
+        gap: 1.2rem;
+      }
+
+      .btn-primary {
+        padding: 0.8rem 2.4rem;
+        font-size: 1rem;
+      }
+
+      .btn-outline {
+        padding: 0.5rem 1.5rem;
+        font-size: 0.9rem;
+      }
+
+      #attractions .attractions-grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1.6rem;
+      }
+
+      .attraction-card {
+        padding: 2rem 1.6rem;
+      }
+
+      .attraction-card h3 {
+        font-size: 1.3rem;
+      }
+
+      #tickets .tickets-wrapper {
+        padding: 2.5rem 3rem;
+      }
+
+      #mask .mask-visual img {
+        max-width: 360px;
+      }
+
+      #location .map-placeholder {
+        min-height: 240px;
+      }
+
+      #instagram .insta-content {
+        padding: 2.8rem 2rem;
+      }
+    }
+
+    /* ============================================================
+       ACCESSIBILITY · FOCUS
+       ============================================================ */
+    a:focus-visible,
+    button:focus-visible {
+      outline: 3px solid var(--lilac);
+      outline-offset: 4px;
+    }
+
+    /* ============================================================
+       UTILITY
+       ============================================================ */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      border: 0;
+    }
+
+    .text-center {
+      text-align: center;
+    }
+    .mt-1 {
+      margin-top: 0.6rem;
+    }
+    .mt-2 {
+      margin-top: 1.2rem;
+    }
+    .gap-1 {
+      gap: 0.6rem;
+    }
+    .flex-center {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* ============================================================
+       MODAL DE COMPRA
+       ============================================================ */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(0, 0, 0, 0.45);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.4s ease, visibility 0.4s ease;
+      padding: 1.2rem;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal-box {
+      max-width: 480px;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.22);
+      backdrop-filter: blur(28px) saturate(1.3);
+      -webkit-backdrop-filter: blur(28px) saturate(1.3);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      box-shadow: 0 32px 80px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+      border-radius: var(--radius);
+      padding: 1.8rem 1.4rem;
+      transform: scale(0.94) translateY(12px);
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease;
+      opacity: 0;
+      position: relative;
+    }
+
+    .modal-overlay.active .modal-box {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: rgba(255, 255, 255, 0.15);
+      border: none;
+      border-radius: 50%;
+      width: 2.2rem;
+      height: 2.2rem;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--text-soft);
+      cursor: pointer;
+      transition: background 0.2s;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .modal-close:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .modal-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 0.2rem;
+    }
+
+    .modal-sub {
+      font-size: 0.95rem;
+      color: var(--text-soft);
+      margin-bottom: 1.4rem;
+    }
+
+    .modal-price {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 1.4rem;
+      letter-spacing: -0.02em;
+    }
+
+    .modal-price small {
+      font-size: 0.9rem;
+      font-weight: 400;
+      color: var(--text-light);
+    }
+
+    .quantity-control {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 1.4rem;
+      flex-wrap: wrap;
+    }
+
+    .quantity-control label {
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: var(--text-soft);
+      min-width: 80px;
+    }
+
+    .quantity-control .qty-group {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 60px;
+      padding: 0.1rem 0.3rem;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .quantity-control .qty-btn {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255, 255, 255, 0.2);
+      font-size: 1.2rem;
+      font-weight: 500;
+      color: var(--text-dark);
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .quantity-control .qty-btn:hover {
+      background: rgba(255, 255, 255, 0.4);
+    }
+
+    .quantity-control .qty-btn:active {
+      transform: scale(0.92);
+    }
+
+    .quantity-control #qty-input {
+      width: 2.8rem;
+      text-align: center;
+      font-size: 1rem;
+      font-weight: 600;
+      background: transparent;
+      border: none;
+      color: var(--text-dark);
+      font-family: 'Inter', sans-serif;
+      padding: 0.2rem 0;
+    }
+
+    .quantity-control #qty-input:focus {
+      outline: none;
+    }
+
+    .quantity-control #qty-input::-webkit-inner-spin-button,
+    .quantity-control #qty-input::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    .quantity-control #qty-input {
+      -moz-appearance: textfield;
+    }
+
+    .modal-subtotal {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.6rem 0;
+      border-top: 1px solid rgba(255, 255, 255, 0.15);
+      margin-bottom: 1.6rem;
+      font-weight: 500;
+      font-size: 1rem;
+      color: var(--text-dark);
+    }
+
+    .modal-subtotal span:last-child {
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    .modal-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .modal-actions .btn-primary {
+      flex: 1;
+      justify-content: center;
+      min-width: 100px;
+    }
+
+    .modal-actions .btn-outline {
+      flex: 1;
+      justify-content: center;
+      min-width: 100px;
+    }
+
+    @media (max-width: 480px) {
+      .modal-box {
+        padding: 1.2rem 1rem;
+      }
+      .modal-title {
+        font-size: 1.2rem;
+      }
+      .modal-price {
+        font-size: 1.5rem;
+      }
+      .quantity-control {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+      }
+      .quantity-control .qty-group {
+        align-self: center;
+      }
+      .modal-actions {
+        flex-direction: column;
+      }
+      .modal-actions .btn-primary,
+      .modal-actions .btn-outline {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ============================================================
+  SITE WRAPPER
+  ============================================================ -->
+  <div class="site-wrapper">
+
+    <!-- ============================================================
+    HERO · id="hero"
+    ============================================================ -->
+    <section id="hero" aria-labelledby="hero-title">
+      <div class="hero-grid">
+
+        <!-- Hero Content -->
+        <div class="hero-content fade-in visible">
+          <div class="hero-badge">
+            <span></span>
+            26 de Julho · A partir das 20h
+          </div>
+
+          <h1 id="hero-title" class="hero-title">
+            <img
+            src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEhz3PR3EZaht0XPM-Yukc8WUzJqaJOCRKNC7NYTyqVVURXQlOoKxgGo8e-OMDl395XCPSUc56UkjCiEOxevL81Y9cb4xLAFmKaVR9Oh8FdY1V7NOcAXILB_IztJAQbXcdIZEiORwm2PlEZzY94GCcNniIfDtxV-GMwwe79ZEqrc9e9w1-PxY2iP5Q-5osNs/s1600/Titile.png"
+            alt="KERIDAINE - Baile de Máscaras Pós-Parada LGBTQIA+"
+            loading="eager"
+            />
+          </h1>
+
+          <p class="hero-desc">
+            Pós-Parada LGBTQIA+ · Uma noite de arte, diversidade e
+            celebração com as melhores atrações.
+          </p>
+
+          <div class="hero-meta">
+            <span class="hero-meta-item">
+              <span class="dot"></span> DJ
+            </span>
+            <span class="hero-meta-item">
+              <span class="dot"></span> Pole Dance
+            </span>
+            <span class="hero-meta-item">
+              <span class="dot"></span> Apresentação Circense
+            </span>
+          </div>
+
+          <div class="hero-actions">
+            <button class="btn-primary" id="btnBuyHero">
+              Comprar Ingresso
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            </button>
+            <a href="#about" class="btn-outline">Sobre o evento</a>
+          </div>
+        </div>
+
+        <!-- Hero 3D Mask -->
+        <div class="hero-visual fade-in visible fade-in-d2" aria-hidden="true">
+          <div id="three-container"></div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+    ABOUT · id="about"
+    ============================================================ -->
+    <section id="about" aria-labelledby="about-title">
+      <div class="about-grid">
+
+        <div class="about-text fade-in">
+          <span class="section-label">Sobre</span>
+          <h2 id="about-title" class="heading-lg font-serif section-title">
+            Quem é a <br />Keridaine?
+          </h2>
+          <p class="lead">
+            Keridaine é mais do que uma festa. É um encontro de pessoas keridas.
+          </p>
+          <p class="text-body">
+            É um espaço construído para que cada pessoa se sinta acolhida, respeitada e livre para existir. Um lugar onde artistas são valorizados, o público participa com cuidado e a diversidade é celebrada em todas as suas formas.
+          </p>
+          <p class="text-body">
+            Acreditamos que uma boa festa também se faz com respeito, atenção e afeto. Queremos que quem sobe ao palco se sinta confortável para se expressar e que quem está na pista compreenda e fortaleça tudo o que esse espaço representa.
+          </p>
+          <p class="text-body">
+            Porque, no fim das contas, Keridaine é isso: uma festa kerida, feita por pessoas keridas, para quem acredita que celebrar também é um ato de cuidado, pertencimento e liberdade.
+          </p>
+        </div>
+
+        <div class="about-image fade-in fade-in-d2">
+          <div class="about-mask-display" aria-hidden="true">
+            <img
+            src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjLcVxwOoHr4cvADwjE0zEconb-gfbU6QDfNbRoLXkilZjkzdr57EJA8pRWxl46kG1J9vWs-VBuqQnsAGWbdX7_C06r1OyuhkBqtmTNNvREFximGw1Mn_2sF2KCxrwgDlD1VWn-FU-V_Qr2w5PSt8fv_SPoMNq8GEFAaL80lp67bRaQ6F06ua6VcDUxEOE_/s1600/mask.png"
+            alt="Máscara Keridaine"
+            />
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+    ATTRACTIONS · id="attractions"
+    ============================================================ -->
+    <section id="attractions" aria-labelledby="attractions-title">
+      <div class="fade-in">
+        <span class="section-label">Atrações</span>
+        <h2 id="attractions-title" class="heading-lg font-serif section-title">
+          Experiências <br />que encantam
+        </h2>
+        <p class="text-body section-sub">
+          Três performances que elevam a noite a um novo patamar de arte e
+          emoção.
+        </p>
+      </div>
+
+      <div class="attractions-grid">
+
+        <article class="attraction-card fade-in fade-in-d1" aria-label="DJ">
+          <div class="attraction-icon" aria-hidden="true">🎧</div>
+          <h3>DJ</h3>
+          <p>Setlist eclético que atravessa gêneros e décadas, com batidas que fazem o corpo se mover.</p>
+        </article>
+
+        <article class="attraction-card fade-in fade-in-d2" aria-label="Pole Dance">
+          <div class="attraction-icon" aria-hidden="true">💃</div>
+          <h3>Pole Dance</h3>
+          <p>Performance de força e graça, onde a verticalidade se encontra com a poesia do movimento.</p>
+        </article>
+
+        <article class="attraction-card fade-in fade-in-d3" aria-label="Apresentação Circense">
+          <div class="attraction-icon" aria-hidden="true">🎪</div>
+          <h3>Apresentação Circense</h3>
+          <p>Mágica, acrobacia e teatro se fundem em um espetáculo que desafia os limites da imaginação.</p>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+    LINEUP · id="lineup"
+    ============================================================ -->
+    <section id="lineup" aria-labelledby="lineup-title">
+      <div class="fade-in">
+        <span class="section-label">Line-up</span>
+        <h2 id="lineup-title" class="heading-lg font-serif section-title">
+          Programação Musical
+        </h2>
+        <p class="text-body section-sub">
+          A música não para. Confira os horários de cada apresentação e sinta a energia da pista.
+        </p>
+      </div>
+
+      <div class="lineup-grid">
+
+        <div class="lineup-schedule glass-light fade-in fade-in-d1" style="padding: 1.2rem;">
+          <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 1rem;">⏰ Horários</h3>
+          <div class="time-slot">
+            <span class="time">20:00 - 21:30</span>
+            <span class="dj-name">@~Matheus✨</span>
+          </div>
+          <div class="time-slot">
+            <span class="time">21:30 - 23:00</span>
+            <span class="dj-name">@~Lais Martins</span>
+          </div>
+          <div class="time-slot">
+            <span class="time">23:00 - 01:30</span>
+            <span class="dj-name">@~Camila</span>
+          </div>
+          <div class="time-slot">
+            <span class="time">01:30 - 03:00</span>
+            <span class="dj-name">@~Pedro Henrique</span>
+          </div>
+        </div>
+
+        <div class="lineup-featured glass-light fade-in fade-in-d2" style="padding: 1.2rem;">
+          <h3 style="font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5rem;">🎧 Destaque: Barros</h3>
+          <p style="font-size: 0.9rem; color: var(--text-soft); line-height: 1.6;">
+            Minha praia é a música eletrônica. Transito entre o Melodic Techno, Melodic House, House e Techno, sempre buscando manter uma identidade sonora bem definida.
+          </p>
+          <p style="font-size: 0.9rem; color: var(--text-soft); line-height: 1.6; margin-top: 0.5rem;">
+            Gosto de conduzir a pista, alternando intensidade, atmosfera e energia para transformar cada set em uma experiência única.
+          </p>
+          <blockquote>
+            “Mais do que ser lembrado pelo meu nome, quero que as pessoas se lembrem do som que viveram comigo.”
+          </blockquote>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+    TICKETS · id="tickets"
+    ============================================================ -->
+    <section id="tickets" aria-labelledby="tickets-title">
+      <div class="tickets-wrapper fade-in">
+
+        <div class="tickets-info">
+          <span class="badge-lote">1º Lote</span>
+          <h2 id="tickets-title" class="heading-lg font-serif" style="margin-bottom:0;">
+            Ingresso + Máscara
+          </h2>
+          <div class="price">
+            R$20 <small>+ taxa</small>
+          </div>
+          <p class="ticket-desc">
+            Garanta seu ingresso com máscara exclusiva. A retirada da
+            máscara será feita no local mediante comprovante.
+          </p>
+          <div class="tickets-cta">
+            <button class="btn-primary" id="btnBuyTickets">
+              Comprar
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+            </button>
+            <div class="tickets-qr">
+              <img
+              src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiEm8Ks9Igqr8h9-VOriIqss_MxDgzp6DKjPXXnStCvIRM1PB41Y7K6zellB9mMRdsY-X7n23ODW4b1tIMojbiHGhQPCOYYU_W8doJpUkBys2uLrNOVfgN7oe2uDSl1qW_KLmvXKpm_8QpUUzk1min0xcGTknWm3BgUQh1ONdGb9DzIDk8AO4v535EjFnuC/s1600/QR%20code%20KERIDAINE%20%281%29.png"
+              alt="QR Code para compra do ingresso Keridaine"
+              loading="lazy"
+              />
+              <span class="qr-label">QR Code</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tickets-info" style="align-items:center; justify-content:center; text-align:center;">
+          <div style="font-size:3rem; opacity:0.2; line-height:1;" aria-hidden="true">✦</div>
+          <p class="text-small" style="max-width:280px;">
+            A máscara será entregue mediante apresentação do comprovante
+            de compra no dia do evento.
+          </p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+    MASK · id="mask"
+    ============================================================ -->
+    <section id="mask" aria-labelledby="mask-title">
+      <div class="mask-content">
+
+        <div class="mask-visual fade-in" aria-hidden="true">
+          <img
+          src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjLcVxwOoHr4cvADwjE0zEconb-gfbU6QDfNbRoLXkilZjkzdr57EJA8pRWxl46kG1J9vWs-VBuqQnsAGWbdX7_C06r1OyuhkBqtmTNNvREFximGw1Mn_2sF2KCxrwgDlD1VWn-FU-V_Qr2w5PSt8fv_SPoMNq8GEFAaL80lp67bRaQ6F06ua6VcDUxEOE_/s1600/mask.png"
+          alt="Máscara Keridaine"
+          loading="lazy"
+          />
+        </div>
+
+        <div class="mask-info fade-in fade-in-d2">
+          <span class="section-label">Máscara</span>
+          <h2 id="mask-title" class="heading-lg font-serif">
+            A Máscara <br />como identidade
+          </h2>
+          <p class="text-body">
+            Cada máscara é uma obra única, confeccionada artesanalmente
+            para celebrar a diversidade e a liberdade de ser quem você é.
+          </p>
+          <div class="mask-note">
+            <strong>✦</strong> A máscara será entregue mediante
+            apresentação do comprovante de compra no dia do evento.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+    LOCATION · id="location"
+    ============================================================ -->
+    <section id="location" aria-labelledby="location-title">
+      <div class="fade-in" style="margin-bottom:1.2rem;">
+        <span class="section-label">Local</span>
+        <h2 id="location-title" class="heading-lg font-serif section-title">
+          Onde acontece
+        </h2>
+      </div>
+
+      <div class="location-grid">
+
+        <div class="location-info fade-in">
+          <div class="address font-serif">
+            Bar Underground 173
+          </div>
+          <div class="address-detail text-body">
+            Rua Dr Antônio Gravata, 173<br />
+            Centro · Betim
+          </div>
+          <a href="#" class="btn-outline" style="align-self:center;">
+            Como chegar
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+
+        <div class="map-placeholder fade-in fade-in-d2" aria-label="Espaço reservado para Google Maps">
+          <div class="map-overlay"></div>
+          <span>Google Maps · reservado</span>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ============================================================
+    INSTAGRAM · id="instagram"
+    ============================================================ -->
+    <section id="instagram" aria-labelledby="instagram-title">
+      <div class="insta-content fade-in">
+        <span class="section-label" style="border-color:transparent; padding-left:0;">Redes</span>
+        <h2 id="instagram-title" class="insta-handle font-serif">
+          @keridaine.com.br
+        </h2>
+        <p class="insta-sub text-body">
+          Siga para acompanhar novidades, sorteios e bastidores.
+        </p>
+        <a href="#" class="btn-primary" style="margin:0 auto;">
+          Seguir no Instagram
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </section>
+
+    <!-- ============================================================
+    FOOTER · id="footer"
+    ============================================================ -->
+    <footer id="footer" role="contentinfo">
+      <p>Evento sujeito à lotação · 26 de Julho · A partir das 20h</p>
+      <p style="margin-top:0.3rem; font-size:0.7rem; opacity:0.5;">
+        KERIDAINE · Baile de Máscaras Pós-Parada LGBTQIA+
+      </p>
+    </footer>
+
+  </div>
+  <!-- /site-wrapper -->
+
+  <!-- ============================================================
+  MODAL DE COMPRA
+  ============================================================ -->
+  <div class="modal-overlay" id="buyModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal-box">
+      <button class="modal-close" id="modalCloseBtn" aria-label="Fechar modal">✕</button>
+
+      <h2 id="modalTitle" class="modal-title">Comprar ingresso</h2>
+      <p class="modal-sub">Baile Keridaine</p>
+      <div class="modal-price">
+        R$ 20,00 <small>por ingresso</small>
+      </div>
+
+      <div class="quantity-control">
+        <label for="qty-input">Quantidade</label>
+        <div class="qty-group">
+          <button class="qty-btn" id="qtyDec" aria-label="Diminuir quantidade">−</button>
+          <input type="number" id="qty-input" value="1" min="1" max="10" step="1" />
+          <button class="qty-btn" id="qtyInc" aria-label="Aumentar quantidade">+</button>
+        </div>
+      </div>
+
+      <div class="modal-subtotal">
+        <span>Subtotal</span>
+        <span id="subtotalDisplay">R$ 20,00</span>
+      </div>
+
+      <div class="modal-actions">
+        <button class="btn-primary" id="modalContinue">Continuar</button>
+        <button class="btn-outline" id="modalCancel">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================================
+  THREE.JS para o Modelo 3D (estático, de frente)
+  ============================================================ -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.126.0/build/three.module.js",
+        "three/addons/": "https://unpkg.com/three@0.126.0/examples/jsm/"
+      }
+    }
+  </script>
+
+  <script type="module">
+    import * as THREE from 'three';
+    import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+
+    const container = document.getElementById('three-container');
+    const width = container.clientWidth;
+    const height = container.clientHeight;
+
+    const scene = new THREE.Scene();
+    scene.background = null;
+
+    const camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+    camera.position.set(0, 0, 3);
+    camera.lookAt(0, 0, 0);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.shadowMap.enabled = true;
+    container.appendChild(renderer.domElement);
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    scene.add(ambientLight);
+
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+    dirLight.position.set(2, 5, 3);
+    scene.add(dirLight);
+
+    const fillLight = new THREE.DirectionalLight(0xffccaa, 0.4);
+    fillLight.position.set(-2, 1, -2);
+    scene.add(fillLight);
+
+    const loader = new OBJLoader();
+    const objUrl = 'https://raw.githubusercontent.com/MOSCHIAT/paradabetim.com.br/main/Catmask.obj';
+
+    loader.load(
+      objUrl,
+      (object) => {
+        const box = new THREE.Box3().setFromObject(object);
+        const center = new THREE.Vector3();
+        box.getCenter(center);
+        object.position.sub(center);
+
+        object.rotation.set(0, 0, 0);
+
+        const size = new THREE.Vector3();
+        box.getSize(size);
+        const maxDim = Math.max(size.x, size.y, size.z);
+        const distance = maxDim * 1.8;
+
+        camera.position.set(0, 0, distance);
+        camera.lookAt(0, 0, 0);
+
+        scene.add(object);
+
+        function animate() {
+          requestAnimationFrame(animate);
+          renderer.render(scene, camera);
+        }
+        animate();
+      },
+      undefined,
+      (error) => {
+        console.error('Erro ao carregar o modelo 3D:', error);
+        container.innerHTML = `
+                  <div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-soft);font-size:0.9rem;text-align:center;padding:1rem;">
+                    <span>🎭<br>Modelo 3D<br>não disponível</span>
+                  </div>
+                `;
+      }
+    );
+
+    function resizeRenderer() {
+      const newWidth = container.clientWidth;
+      const newHeight = container.clientHeight;
+      if (newWidth > 0 && newHeight > 0) {
+        renderer.setSize(newWidth, newHeight);
+        camera.aspect = newWidth / newHeight;
+        camera.updateProjectionMatrix();
+      }
+    }
+
+    window.addEventListener('resize', resizeRenderer);
+    setTimeout(resizeRenderer, 100);
+  </script>
+
+  <!-- ============================================================
+  FIREBASE INTEGRATION
+  ============================================================ -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js";
+    import { getAnalytics } from "https://www.gstatic.com/firebasejs/12.16.0/firebase-analytics.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC5J0pPP1nqzL1rTqY-vLTVaevWSwDQwdc",
+      authDomain: "keridaine-4c0e5.firebaseapp.com",
+      projectId: "keridaine-4c0e5",
+      storageBucket: "keridaine-4c0e5.firebasestorage.app",
+      messagingSenderId: "914860118360",
+      appId: "1:914860118360:web:8778db5b547519d236152d",
+      measurementId: "G-2E8E9GPTRW"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(app);
+
+    console.log('🔥 Firebase inicializado com sucesso!');
+  </script>
+
+  <!-- ============================================================
+  JAVASCRIPT · Modal + Interatividade
+  ============================================================ -->
+  <script>
+    (function() {
+      'use strict';
+
+      const modal = document.getElementById('buyModal');
+      const modalCloseBtn = document.getElementById('modalCloseBtn');
+      const modalCancel = document.getElementById('modalCancel');
+      const modalContinue = document.getElementById('modalContinue');
+      const qtyInput = document.getElementById('qty-input');
+      const qtyDec = document.getElementById('qtyDec');
+      const qtyInc = document.getElementById('qtyInc');
+      const subtotalDisplay = document.getElementById('subtotalDisplay');
+
+      const PRICE = 20.00;
+
+      function openModal() {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        setTimeout(() => modal.querySelector('.modal-box').focus(), 100);
+        updateSubtotal();
+      }
+
+      function closeModal() {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      function updateSubtotal() {
+        let qty = parseInt(qtyInput.value, 10) || 1;
+        if (qty < 1) qty = 1;
+        if (qty > 10) qty = 10;
+        qtyInput.value = qty;
+        const total = qty * PRICE;
+        subtotalDisplay.textContent = `R$ ${total.toFixed(2)}`;
+      }
+
+      function changeQty(delta) {
+        let qty = parseInt(qtyInput.value, 10) || 1;
+        qty = Math.min(10, Math.max(1, qty + delta));
+        qtyInput.value = qty;
+        updateSubtotal();
+      }
+
+      document.getElementById('btnBuyHero').addEventListener('click', openModal);
+      document.getElementById('btnBuyTickets').addEventListener('click', openModal);
+
+      modalCloseBtn.addEventListener('click', closeModal);
+      modalCancel.addEventListener('click', closeModal);
+
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) {
+          closeModal();
+        }
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape' && modal.classList.contains('active')) {
+          closeModal();
+        }
+      });
+
+      qtyDec.addEventListener('click', () => changeQty(-1));
+      qtyInc.addEventListener('click', () => changeQty(1));
+      qtyInput.addEventListener('input', updateSubtotal);
+
+      modalContinue.addEventListener('click', function() {
+        const qty = parseInt(qtyInput.value, 10) || 1;
+        alert(`🔜 Em breve: checkout com ${qty} ingresso(s)!\nTotal: R$ ${(qty * PRICE).toFixed(2)}`);
+      });
+
+      const fadeElements = document.querySelectorAll('.fade-in');
+      if ('IntersectionObserver' in window) {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+            }
+          });
+        }, { threshold: 0.15, rootMargin: '0px 0px -20px 0px' });
+        fadeElements.forEach(el => observer.observe(el));
+        setTimeout(() => {
+          fadeElements.forEach(el => {
+            const rect = el.getBoundingClientRect();
+            const winHeight = window.innerHeight || document.documentElement.clientHeight;
+            if (rect.top < winHeight * 0.85) {
+              el.classList.add('visible');
+            }
+          });
+        }, 120);
+      } else {
+        fadeElements.forEach(el => el.classList.add('visible'));
+      }
+
+      document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+          const href = this.getAttribute('href');
+          if (href === '#') return;
+          const target = document.querySelector(href);
+          if (target) {
+            e.preventDefault();
+            const offsetTop = target.getBoundingClientRect().top + window.pageYOffset - 20;
+            window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+          }
+        });
+      });
+
+      console.log('✨ KERIDAINE · Modal de compra ativado!');
+    })();
+  </script>
+
+</body>
+</html>
