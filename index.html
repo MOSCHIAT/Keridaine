@@ -184,7 +184,7 @@
     }
 
     /* ============================================================
-       HERO (mantido igual)
+       HERO
        ============================================================ */
     #hero {
       padding: 0.8rem 0 2rem;
@@ -374,7 +374,7 @@
     }
 
     /* ============================================================
-       LINEUP (com animação)
+       LINEUP
        ============================================================ */
     #lineup .lineup-grid {
       display: grid;
@@ -484,7 +484,98 @@
     }
 
     /* ============================================================
-       ATTRACTIONS (com imagem do DJ)
+       CARDS · ARTISTAS CONVIDADOS (QUADRADOS E SOBREPOSTOS)
+       ============================================================ */
+    #cards .cards-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+
+    #cards .card-item {
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 0.5rem;
+      padding: 1.5rem 1rem 2rem;
+      text-align: center;
+      transition: all var(--transition);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.02);
+      height: auto;
+    }
+
+    #cards .card-item:hover {
+      transform: translateY(-4px);
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.25);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
+    }
+
+    #cards .card-image {
+      width: 100%;
+      aspect-ratio: 1/1;
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.10);
+      border-radius: 0.4rem;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all var(--transition);
+    }
+
+    #cards .card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: block;
+      transition: transform 0.4s ease;
+    }
+
+    #cards .card-item:hover .card-image {
+      transform: scale(1.01);
+      border-color: var(--lilac);
+    }
+
+    #cards .card-item:hover .card-image img {
+      transform: scale(1.02);
+    }
+
+    #cards .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--text-dark);
+      margin-bottom: 0.1rem;
+    }
+
+    #cards .card-bio {
+      font-size: 0.85rem;
+      line-height: 1.6;
+      color: var(--text-soft);
+      max-width: 90%;
+      flex: 1;
+    }
+
+    #cards .card-bio span {
+      display: block;
+      font-style: italic;
+      color: var(--text-light);
+      margin-top: 0.5rem;
+      font-size: 0.8rem;
+      border-left: 2px solid var(--lilac);
+      padding-left: 0.6rem;
+      text-align: left;
+    }
+
+    /* ============================================================
+       ATTRACTIONS
        ============================================================ */
     #attractions .attractions-grid {
       display: grid;
@@ -840,8 +931,21 @@
     .fade-in-d3 { transition-delay: 0.24s; }
 
     /* ============================================================
-       RESPONSIVE (resumido para o checkout)
+       RESPONSIVE
        ============================================================ */
+    @media (min-width: 640px) {
+      #cards .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+        max-width: 720px;
+        gap: 1.2rem;
+      }
+      #cards .card-item:last-child {
+        grid-column: 1 / -1;
+        max-width: 60%;
+        justify-self: center;
+      }
+    }
+
     @media (min-width: 768px) {
       .site-wrapper { padding: 0 2rem; }
       section { padding: 3rem 0; }
@@ -892,10 +996,19 @@
       #location .map-container { min-height: 280px; }
       #location .map-container iframe { min-height: 280px; }
       #instagram .insta-content { padding: 2.8rem 2rem; }
+      #cards .cards-grid {
+        grid-template-columns: repeat(3, 1fr);
+        max-width: 1024px;
+        gap: 1.8rem;
+      }
+      #cards .card-item:last-child {
+        grid-column: auto;
+        max-width: 100%;
+      }
     }
 
     /* ============================================================
-       CHECKOUT MODAL (nova sessão segura)
+       CHECKOUT MODAL
        ============================================================ */
     .checkout-overlay {
       position: fixed;
@@ -1264,6 +1377,55 @@
     </section>
 
     <!-- ============================================================
+    CARDS · ARTISTAS CONVIDADOS (QUADRADOS)
+    ============================================================ -->
+    <section id="cards" aria-labelledby="cards-title">
+      <div class="fade-in" style="text-align:center; margin-bottom:1.2rem;">
+        <span class="section-label" style="border-color:transparent; padding-left:0;">Convidados</span>
+        <h2 id="cards-title" class="heading-lg font-serif section-title">Artistas <br />que inspiram</h2>
+        <p class="text-body section-sub" style="margin:0 auto;">Conheça alguns dos talentos que fazem parte da nossa comunidade.</p>
+      </div>
+      <div class="cards-grid">
+        <div class="card-item fade-in fade-in-d1">
+          <div class="card-image">
+            <img src="https://raw.githubusercontent.com/MOSCHIAT/Keridaine/main/1.png" alt="Luna Vaz" loading="lazy" />
+          </div>
+          <h3 class="card-title">Luna Vaz</h3>
+          <p class="card-bio">
+            Produtora cultural e DJ, Luna começou sua trajetória nas festas underground de Belo Horizonte.
+            Seu som mistura influências do house clássico com batidas eletrônicas contemporâneas,
+            criando uma atmosfera única que conecta o público à pista.
+            <span>“Música é a ponte entre o que sinto e o que quero que o outro sinta.”</span>
+          </p>
+        </div>
+        <div class="card-item fade-in fade-in-d2">
+          <div class="card-image">
+            <img src="https://raw.githubusercontent.com/MOSCHIAT/Keridaine/main/2.png" alt="Davi Sol" loading="lazy" />
+          </div>
+          <h3 class="card-title">Davi Sol</h3>
+          <p class="card-bio">
+            Artista multimídia e percussionista, Davi transita entre a música eletrônica e os ritmos brasileiros.
+            Com uma carreira dedicada a experiências imersivas, ele acredita que cada apresentação é um ritual
+            de celebração e resistência.
+            <span>“O som é a minha forma de existir no mundo.”</span>
+          </p>
+        </div>
+        <div class="card-item fade-in fade-in-d3">
+          <div class="card-image">
+            <img src="https://raw.githubusercontent.com/MOSCHIAT/Keridaine/main/3.png" alt="Maya Rios" loading="lazy" />
+          </div>
+          <h3 class="card-title">Maya Rios</h3>
+          <p class="card-bio">
+            Designer de moda e ativista, Maya traz para o palco a força da estética queer e da diversidade.
+            Sua performance é uma fusão de arte visual, movimento e música, criando um espetáculo que
+            desafia convenções e convida à reflexão.
+            <span>“Arte é liberdade. E liberdade se faz com coragem.”</span>
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============================================================
     ATTRACTIONS
     ============================================================ -->
     <section id="attractions" aria-labelledby="attractions-title">
@@ -1395,7 +1557,7 @@
   <!-- /site-wrapper -->
 
   <!-- ============================================================
-  CHECKOUT MODAL (seguro)
+  CHECKOUT MODAL
   ============================================================ -->
   <div class="checkout-overlay" id="checkoutModal" role="dialog" aria-modal="true" aria-labelledby="checkoutTitle">
     <div class="checkout-box">
@@ -1740,7 +1902,7 @@
       // Inicializar com cartão visível
       cardFields.style.display = 'block';
 
-      // ---- FADE-IN OBSERVER (mesmo do site) ----
+      // ---- FADE-IN OBSERVER ----
       const fadeElements = document.querySelectorAll('.fade-in');
       if ('IntersectionObserver' in window) {
         const observer = new IntersectionObserver((entries) => {
