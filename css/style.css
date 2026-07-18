@@ -1,0 +1,208 @@
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --rose: #f9d5e5;
+  --lilac: #d9c8f0;
+  --sky: #c3e2f7;
+  --mint: #c7f0db;
+  --butter: #f9edc7;
+  --glass-bg: rgba(255, 255, 255, 0.18);
+  --glass-border: rgba(255, 255, 255, 0.35);
+  --glass-shadow: rgba(0, 0, 0, 0.04);
+  --text-dark: #1e1a2b;
+  --text-soft: #3d3652;
+  --text-light: #6b637e;
+  --white: #ffffff;
+  --radius: 2.4rem;
+  --radius-sm: 1.2rem;
+  --transition: 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  color: var(--text-dark);
+  line-height: 1.6;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at 12% 8%, #8d5eff 0%, transparent 35%),
+    radial-gradient(circle at 88% 10%, #47f7e8 0%, transparent 35%),
+    radial-gradient(circle at 82% 42%, #e7ff66 0%, transparent 30%),
+    radial-gradient(circle at 48% 82%, #ff2ba5 0%, transparent 38%),
+    radial-gradient(circle at 12% 88%, #ffc4d9 0%, transparent 30%),
+    radial-gradient(circle at 95% 92%, #ffc56b 0%, transparent 30%),
+    linear-gradient(180deg,
+      #8da2bc 0%,
+      #c5d0d2 30%,
+      #f5e58f 55%,
+      #ffc5d7 75%,
+      #ff4aa8 100%);
+  position: relative;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: -20%;
+  background: inherit;
+  filter: blur(90px);
+  opacity: .85;
+  z-index: -2;
+}
+
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(rgba(255, 255, 255, .20) 1px, transparent 1px);
+  background-size: 5px 5px;
+  opacity: .08;
+  mix-blend-mode: soft-light;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.site-wrapper {
+  position: relative;
+  z-index: 1;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.2rem;
+}
+
+/* ============================================================
+   GLASS
+   ============================================================ */
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: blur(16px) saturate(1.2);
+  -webkit-backdrop-filter: blur(16px) saturate(1.2);
+  border: 1px solid var(--glass-border);
+  box-shadow: 0 12px 48px var(--glass-shadow), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  border-radius: var(--radius);
+}
+
+.glass-light {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px) saturate(1.1);
+  -webkit-backdrop-filter: blur(10px) saturate(1.1);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.03);
+  border-radius: var(--radius-sm);
+}
+
+/* ============================================================
+   TYPOGRAPHY
+   ============================================================ */
+.font-serif {
+  font-family: 'Playfair Display', Georgia, 'Times New Roman', serif;
+}
+.font-sans {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+.heading-lg {
+  font-size: clamp(1.8rem, 4.5vw, 3.4rem);
+  font-weight: 600;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+.text-body {
+  font-size: 1rem;
+  font-weight: 400;
+  color: var(--text-soft);
+  line-height: 1.7;
+}
+.text-small {
+  font-size: 0.85rem;
+  font-weight: 400;
+  color: var(--text-light);
+  letter-spacing: 0.02em;
+}
+
+/* ============================================================
+   BOTÕES
+   ============================================================ */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.6rem 1.6rem;
+  background: rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 60px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-dark);
+  cursor: pointer;
+  transition: all var(--transition);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  text-decoration: none;
+  letter-spacing: 0.02em;
+}
+
+.btn-primary:hover {
+  background: rgba(255, 255, 255, 0.55);
+  transform: translateY(-2px) scale(1.01);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.06);
+  border-color: rgba(255, 255, 255, 0.7);
+}
+
+.btn-primary:active {
+  transform: scale(0.97);
+}
+
+.btn-outline {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 1.2rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 60px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 500;
+  font-size: 0.85rem;
+  color: var(--text-soft);
+  cursor: pointer;
+  transition: all var(--transition);
+  text-decoration: none;
+  backdrop-filter: blur(4px);
+}
+
+.btn-outline:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-1px);
+}
+
+/* ============================================================
+   KEYFRAMES
+   ============================================================ */
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.3; transform: scale(0.7); }
+}
+
+/* ============================================================
+   RESPONSIVIDADE BÁSICA
+   ============================================================ */
+@media (max-width: 640px) {
+  .site-wrapper { padding: 0 1rem; }
+}

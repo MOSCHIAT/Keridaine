@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin · KERIDAINE</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script type="importmap">
+    {
+      "imports": {
+        "firebase/app": "https://www.gstatic.com/firebasejs/12.16.0/firebase-app.js",
+        "firebase/firestore": "https://www.gstatic.com/firebasejs/12.16.0/firebase-firestore.js"
+      }
+    }
+  </script>
+  <style>
+    .admin-container {
+      max-width: 1024px;
+      margin: 0 auto;
+      padding: 1rem 0;
+    }
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .admin-stats {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    .stat-card {
+      background: rgba(255,255,255,0.08);
+      padding: 0.6rem 1.2rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255,255,255,0.1);
+      text-align: center;
+    }
+    .stat-card .num {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--text-dark);
+    }
+    .stat-card .label {
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-light);
+    }
+    .table-container {
+      background: rgba(255,255,255,0.06);
+      border-radius: var(--radius-sm);
+      border: 1px solid rgba(255,255,255,0.08);
+      overflow-x: auto;
+      padding: 0.5rem;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+      min-width: 480px;
+    }
+    th {
+      text-align: left;
+      padding: 0.6rem 0.4rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      font-weight: 600;
+      color: var(--text-dark);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    td {
+      padding: 0.6rem 0.4rem;
+      border-bottom: 1px solid rgba(255,255,255,0.04);
+    }
+    .badge-status {
+      display: inline-block;
+      padding: 0.15rem 0.6rem;
+      border-radius: 100px;
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+    .badge-status.ativo { background: rgba(34,197,94,0.15); color: #22c55e; }
+    .badge-status.usado { background: rgba(239,68,68,0.15); color: #ef4444; }
+    .btn-sm {
+      font-size: 0.7rem;
+      padding: 0.2rem 0.8rem;
+      border-radius: 60px;
+      border: 1px solid rgba(255,255,255,0.2);
+      background: rgba(255,255,255,0.1);
+      color: var(--text-soft);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .btn-sm:hover {
+      background: rgba(255,255,255,0.2);
+    }
+    .btn-sm.danger:hover {
+      background: rgba(239,68,68,0.2);
+      border-color: rgba(239,68,68,0.3);
+    }
+    .loading {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-light);
+    }
+    .admin-actions {
+      display: flex;
+      gap: 0.8rem;
+      flex-wrap: wrap;
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="site-wrapper">
+    <div class="admin-container">
+      <div class="admin-header">
+        <div>
+          <h2 class="heading-lg font-serif">🎟️ Admin</h2>
+          <p class="text-small">Gerenciamento de ingressos</p>
+        </div>
+        <div>
+          <a href="index.html" class="btn-outline" style="font-size:0.8rem;">← Voltar</a>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="admin-stats" id="stats">
+        <div class="stat-card"><div class="num" id="totalCount">0</div><div class="label">Total</div></div>
+        <div class="stat-card"><div class="num" id="ativosCount">0</div><div class="label">Ativos</div></div>
+        <div class="stat-card"><div class="num" id="usadosCount">0</div><div class="label">Usados</div></div>
+      </div>
+
+      <!-- Ações -->
+      <div class="admin-actions">
+        <button class="btn-primary" id="refreshBtn" style="font-size:0.8rem; padding:0.4rem 1.2rem;">🔄 Atualizar</button>
+        <button class="btn-outline" id="exportBtn" style="font-size:0.8rem; padding:0.4rem 1.2rem;">📥 Exportar CSV</button>
+      </div>
+
+      <!-- Tabela -->
+      <div class="table-container">
+        <div id="tableLoading" class="loading">⏳ Carregando ingressos...</div>
+        <table id="ticketsTable" style="display:none;">
+          <thead>
+            <tr>
+              <th>Transação</th>
+              <th>Pagante</th>
+              <th>Valor</th>
+              <th>Status</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody id="tableBody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from 'firebase/app';
+    import { getFirestore, collection, getDocs, doc, updateDoc, deleteDoc } from 'firebase/firestore';
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyC5J0pPP1nqzL1rTqY-vLTVaevWSwDQwdc",
+      authDomain: "keridaine-4c0e5.firebaseapp.com",
+      projectId: "keridaine-4c0e5",
+      storageBucket: "keridaine-4c0e5.firebasestorage.app",
+      messagingSenderId: "914860118360",
+      appId: "1:914860118360:web:8778db5b547519d236152d",
+      measurementId: "G-2E8E9GPTRW"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const tableBody = document.getElementById('tableBody');
+    const tableLoading = document.getElementById('tableLoading');
+    const ticketsTable = document.getElementById('ticketsTable');
+    const totalSpan = document.getElementById('totalCount');
+    const ativosSpan = document.getElementById('ativosCount');
+    const usadosSpan = document.getElementById('usadosCount');
+
+    // ============================================================
+    // CARREGAR DADOS
+    // ============================================================
+    async function carregarIngressos() {
+      tableLoading.style.display = 'block';
+      ticketsTable.style.display = 'none';
+
+      try {
+        const querySnapshot = await getDocs(collection(db, 'ingressos'));
+        const ingressos = [];
+        querySnapshot.forEach(doc => {
+          ingressos.push({ id: doc.id, ...doc.data() });
+        });
+
+        // Ordenar por data de criação (mais recente primeiro)
+        ingressos.sort((a, b) => (b.criadoEm || 0) - (a.criadoEm || 0));
+
+        renderTable(ingressos);
+        atualizarStats(ingressos);
+      } catch (error) {
+        console.error('Erro ao carregar ingressos:', error);
+        tableLoading.textContent = '❌ Erro ao carregar dados.';
+        tableLoading.style.display = 'block';
+      }
+    }
+
+    // ============================================================
+    // RENDERIZAR TABELA
+    // ============================================================
+    function renderTable(ingressos) {
+      if (ingressos.length === 0) {
+        tableLoading.textContent = '📭 Nenhum ingresso cadastrado ainda.';
+        tableLoading.style.display = 'block';
+        ticketsTable.style.display = 'none';
+        return;
+      }
+
+      tableLoading.style.display = 'none';
+      ticketsTable.style.display = 'table';
+
+      tableBody.innerHTML = '';
+      ingressos.forEach(item => {
+        const tr = document.createElement('tr');
+        const statusClass = item.status === 'usado' ? 'usado' : 'ativo';
+        tr.innerHTML = `
+          <td><code style="font-size:0.7rem;">${item.transacao || item.id}</code></td>
+          <td>${item.nome || '—'}</td>
+          <td>R$ ${(item.valorPago || 0).toFixed(2)}</td>
+          <td><span class="badge-status ${statusClass}">${item.status || 'ativo'}</span></td>
+          <td>
+            ${item.status !== 'usado' ? `<button class="btn-sm" data-action="usar" data-id="${item.id}">✅ Usar</button>` : ''}
+            <button class="btn-sm danger" data-action="delete" data-id="${item.id}">🗑️</button>
+          </td>
+        `;
+        tableBody.appendChild(tr);
+      });
+
+      // Eventos dos botões
+      tableBody.querySelectorAll('[data-action="usar"]').forEach(btn => {
+        btn.addEventListener('click', async function() {
+          const id = this.dataset.id;
+          if (confirm(`Marcar ingresso ${id} como utilizado?`)) {
+            try {
+              await updateDoc(doc(db, 'ingressos', id), { status: 'usado', dataUso: new Date().toISOString() });
+              carregarIngressos();
+            } catch (err) {
+              alert('Erro: ' + err.message);
+            }
+          }
+        });
+      });
+
+      tableBody.querySelectorAll('[data-action="delete"]').forEach(btn => {
+        btn.addEventListener('click', async function() {
+          const id = this.dataset.id;
+          if (confirm(`Excluir ingresso ${id} permanentemente?`)) {
+            try {
+              await deleteDoc(doc(db, 'ingressos', id));
+              carregarIngressos();
+            } catch (err) {
+              alert('Erro: ' + err.message);
+            }
+          }
+        });
+      });
+    }
+
+    // ============================================================
+    // ATUALIZAR STATS
+    // ============================================================
+    function atualizarStats(ingressos) {
+      const total = ingressos.length;
+      const ativos = ingressos.filter(i => i.status !== 'usado').length;
+      const usados = ingressos.filter(i => i.status === 'usado').length;
+      totalSpan.textContent = total;
+      ativosSpan.textContent = ativos;
+      usadosSpan.textContent = usados;
+    }
+
+    // ============================================================
+    // EXPORTAR CSV
+    // ============================================================
+    document.getElementById('exportBtn').addEventListener('click', async function() {
+      try {
+        const querySnapshot = await getDocs(collection(db, 'ingressos'));
+        const ingressos = [];
+        querySnapshot.forEach(doc => {
+          ingressos.push({ id: doc.id, ...doc.data() });
+        });
+
+        if (ingressos.length === 0) {
+          alert('Nenhum ingresso para exportar.');
+          return;
+        }
+
+        const headers = ['Transação', 'Nome', 'E-mail', 'Valor Pago', 'Total a Receber', 'Data Pagamento', 'Hora', 'Data Evento', 'Local', 'Status', 'Data Uso'];
+        const rows = ingressos.map(i => [
+          i.transacao || i.id,
+          i.nome || '',
+          i.email || '',
+          i.valorPago || 0,
+          i.totalReceber || 0,
+          i.dataPagamento || '',
+          i.hora || '',
+          i.dataEvento || '',
+          i.local || '',
+          i.status || 'ativo',
+          i.dataUso || ''
+        ]);
+
+        let csv = headers.join(';') + '\n';
+        rows.forEach(row => {
+          csv += row.join(';') + '\n';
+        });
+
+        const blob = new Blob(['\uFEFF' + csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = `ingressos_${new Date().toISOString().slice(0,10)}.csv`;
+        link.click();
+        URL.revokeObjectURL(link.href);
+      } catch (err) {
+        alert('Erro ao exportar: ' + err.message);
+      }
+    });
+
+    // ============================================================
+    // REFRESH
+    // ============================================================
+    document.getElementById('refreshBtn').addEventListener('click', carregarIngressos);
+
+    // ============================================================
+    // INICIAR
+    // ============================================================
+    carregarIngressos();
+  </script>
+</body>
+</html>
