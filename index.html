@@ -1289,6 +1289,61 @@
       .checkout-step-indicator .step .num { width: 1.5rem; height: 1.5rem; font-size: 0.7rem; }
       .payment-options .payment-option { min-width: 60px; font-size: 0.75rem; padding: 0.4rem 0.6rem; }
     }
+
+    /* ============================================================
+       MENU DE NAVEGAÇÃO (adicional)
+       ============================================================ */
+    .site-nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.5rem 1.5rem;
+      border-radius: 60px;
+      margin-top: 1rem;
+      background: rgba(255, 255, 255, 0.15);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+
+    .site-nav .brand {
+      font-weight: 600;
+      font-size: 1.1rem;
+      color: var(--text-dark);
+    }
+
+    .site-nav ul {
+      list-style: none;
+      display: flex;
+      gap: 0.8rem;
+      margin: 0;
+      padding: 0;
+      flex-wrap: wrap;
+    }
+
+    .site-nav ul li a {
+      padding: 0.2rem 1rem;
+      font-size: 0.8rem;
+    }
+
+    @media (max-width: 480px) {
+      .site-nav {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+        padding: 0.5rem 1rem;
+      }
+      .site-nav ul {
+        justify-content: center;
+        gap: 0.4rem;
+      }
+      .site-nav ul li a {
+        padding: 0.2rem 0.6rem;
+        font-size: 0.75rem;
+      }
+    }
   </style>
 </head>
 
@@ -1298,6 +1353,18 @@
   SITE WRAPPER
   ============================================================ -->
   <div class="site-wrapper">
+
+    <!-- ============================================================
+    MENU DE NAVEGAÇÃO (integrado)
+    ============================================================ -->
+    <nav class="site-nav" aria-label="Navegação principal">
+      <span class="brand font-serif">KERIDAINE</span>
+      <ul>
+        <li><a href="meu-ingresso.html?id=169180183292" class="btn-outline">Meu Ingresso</a></li>
+        <li><a href="checkin.html" class="btn-outline">Check-in</a></li>
+        <li><a href="admin.html" class="btn-outline">Admin</a></li>
+      </ul>
+    </nav>
 
     <!-- ============================================================
     HERO
